@@ -162,8 +162,19 @@ if (window.THREE) {
   ren.setPixelRatio(Math.min(devicePixelRatio, 2)); ren.outputEncoding = T.sRGBEncoding;
   cam.position.set(0, 1.9, 7.2); cam.lookAt(0, 1.4, 0);
   sc.add(new T.HemisphereLight(0xfff2e0, 0x2a1620, 1.05));
-  const dl = new T.DirectionalLight(0xffffff, 1); dl.position.set(3, 5, 6); sc.add(dl);
+  const dl = new T.DirectionalLight(0xffffff, 1); dl.position.set(3, 5, 6); sc.add(dl); window.__dollLight = dl; /* effects.js moves this light with the cursor */
   const rim = new T.DirectionalLight(0xff9fc0, .65); rim.position.set(-4, 2, -3); sc.add(rim);
+  /* REALISM 1 — studio lighting: a small procedural "softbox room" becomes the reflection map, so the lacquered paint and wood get real sheen */
+  try {
+    const pmrem = new T.PMREMGenerator(ren), room = new T.Scene(); room.background = new T.Color(0x2a1f2c);
+    const box = (c, k, x, y, z, w, h) => { const m = new T.Mesh(new T.PlaneGeometry(w, h), new T.MeshBasicMaterial({ color: new T.Color(c).multiplyScalar(k), side: T.DoubleSide })); m.position.set(x, y, z); m.lookAt(0, 0, 0); room.add(m) };
+    box(0xfff1e0, 2.2, 4, 6, 5, 7, 5); box(0xffb0cc, 1.1, -6, 2, -2, 4, 7); box(0xbcd6ff, .8, 0, -3, 6, 9, 2); box(0xffe0b0, .8, -3, 7, -4, 6, 3);
+    sc.environment = pmrem.fromScene(room, .04).texture; pmrem.dispose();
+  } catch (err) { console.warn("environment map skipped", err) }
+  /* REALISM 2 — real soft shadows cast on the ground under the doll */
+  ren.shadowMap.enabled = true; ren.shadowMap.type = T.PCFSoftShadowMap;
+  dl.castShadow = true; dl.shadow.mapSize.set(2048, 2048); dl.shadow.bias = -.0004; dl.shadow.radius = 5;
+  Object.assign(dl.shadow.camera, { left: -6, right: 6, top: 6, bottom: -6, near: .5, far: 24 });
   const heroH1 = document.querySelector(".hero h1"), heroT = document.querySelector(".hero .t");
 
   /* paint the dress onto a canvas — branches by doll kind */
@@ -215,7 +226,7 @@ if (window.THREE) {
   const P = [[0, 0], [.5, 0], [.6, .05]];
   for (let i = 0; i <= 20; i++) { const y = .1 + i * .084; P.push([y < 1.35 ? .64 - .31 * y / 1.35 : .3 - (y - 1.35) * .1, y]) }
   P.push([0, 1.78]);
-  const body = new T.Mesh(new T.LatheGeometry(P.map(p => new T.Vector2(p[0], p[1])), 48), new T.MeshStandardMaterial({ map: tex[0], roughness: .7 }));
+  const body = new T.Mesh(new T.LatheGeometry(P.map(p => new T.Vector2(p[0], p[1])), 48), new T.MeshStandardMaterial({ map: tex[0], roughness: .62 }));
   body.rotation.y = Math.PI; doll.add(body);
   const wood = new T.MeshStandardMaterial({ color: 0xe0a96d, roughness: .55 }),
     brown = new T.MeshStandardMaterial({ color: 0x7a4a2b, roughness: .8, side: T.DoubleSide });
@@ -244,7 +255,10 @@ if (window.THREE) {
   bowtie.add(new T.Mesh(new T.SphereGeometry(.04, 10, 8), btMat));
   bowtie.position.set(0, 1.56, .28); bowtie.rotation.x = .1; bowtie.visible = false; doll.add(bowtie);
   const sh = new T.Mesh(new T.CircleGeometry(.9, 32), new T.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: .35 }));
-  sh.rotation.x = -Math.PI / 2; sh.position.y = .01; doll.add(sh); sc.add(doll);
+  sh.rotation.x = -Math.PI / 2; sh.position.y = .01; doll.add(sh);
+  const floor = new T.Mesh(new T.CircleGeometry(2.6, 48), new T.ShadowMaterial({ opacity: .32 })); floor.rotation.x = -Math.PI / 2; floor.position.y = .02; floor.receiveShadow = true; doll.add(floor);
+  doll.traverse(o => { if (o.isMesh && o !== floor && o !== sh) { o.castShadow = true; if (o.material && "envMapIntensity" in o.material) o.material.envMapIntensity = .3 } }); /* reflections stay subtle so the paint keeps its true colour */
+  sc.add(doll);
 
   /* doll-variety picker */
   $("#chips").innerHTML = TY.map((t, i) => `<button aria-pressed="false"><i style="background:${t.c[0]}"></i>${t.n}</button>`).join("");
@@ -320,6 +334,8 @@ if (window.THREE) {
     }
     doll.position.set(M ? 0 : cur[0], M ? .5 : 0, 0); doll.scale.setScalar(cur[1] * (M ? .8 : 1));
     hg.position.y = 2.2 + cur[2]; doll.rotation.y = rot + man;
+    /* REALISM 3 — idle life: the doll gently breathes and its head sways */
+    const tt = performance.now() / 1000; doll.position.y += Math.sin(tt * 1.4) * .025; hg.rotation.z = Math.sin(tt * .9) * .035; hg.rotation.x = Math.sin(tt * .7 + 1) * .02;
     cv.style.opacity = Math.max(0, Math.min(1, (FADE_AT - p) / .4));
     const heroFade = Math.max(0, 1 - p * 1.15);
     heroH1.style.transform = `translateY(${(p * -70).toFixed(1)}px)`; heroH1.style.opacity = heroFade;

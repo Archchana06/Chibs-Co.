@@ -1,0 +1,59 @@
+/* ===== Motion layer: loaded after style.css. Delete this file + effects.js to go back to the plain site. ===== */
+
+/* Reveal: rises, unblurs and settles, staggered by --d (set in effects.js) */
+.reveal {
+  opacity: 0;
+  transform: translateY(46px) scale(.96);
+  filter: blur(10px);
+  transition: opacity .9s cubic-bezier(.2, .7, .2, 1) var(--d, 0s),
+              transform .9s cubic-bezier(.2, .7, .2, 1) var(--d, 0s),
+              filter .9s ease var(--d, 0s);
+}
+.reveal.in { opacity: 1; transform: none; filter: none; }
+
+/* Scroll progress bar */
+#progress {
+  position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 9;
+  transform: scaleX(0); transform-origin: 0 50%;
+  background: linear-gradient(90deg, var(--accent), var(--gold));
+}
+
+/* Falling petals + dust (canvas) */
+#fx { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
+
+/* Soft light that follows the cursor */
+#glow {
+  position: fixed; left: 0; top: 0; width: 560px; height: 560px; z-index: 5;
+  margin: -280px 0 0 -280px; pointer-events: none; opacity: 0; transition: opacity .6s ease;
+  background: radial-gradient(closest-side, rgba(255, 236, 214, .12), rgba(255, 200, 220, .04) 55%, transparent 75%);
+  mix-blend-mode: soft-light;
+}
+#glow.on { opacity: 1; }
+
+/* 3D tilt + moving glare on cards and photos */
+.tilt { position: relative; transform-style: preserve-3d; will-change: transform; }
+.glare {
+  position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0;
+  background: radial-gradient(circle at var(--gx, 50%) var(--gy, 50%), rgba(255, 255, 255, .38), transparent 55%);
+  mix-blend-mode: soft-light; transition: opacity .3s ease;
+}
+.tilt:hover .glare { opacity: 1; }
+
+/* Photos drift slightly against the scroll (parallax) */
+.gallery img, .igcard img { scale: 1.12; translate: 0 var(--py, 0px); }
+
+/* Sunlight rays drifting across the scene */
+#rays {
+  position: fixed; inset: -20%; z-index: 1; pointer-events: none; opacity: .55; mix-blend-mode: screen; filter: blur(14px);
+  background: conic-gradient(from 200deg at 85% -10%, transparent 0deg, rgba(255, 230, 200, .16) 8deg, transparent 16deg,
+    rgba(255, 210, 230, .12) 26deg, transparent 36deg, rgba(255, 240, 220, .14) 48deg, transparent 60deg);
+  animation: rays 18s ease-in-out infinite alternate;
+}
+@keyframes rays { from { transform: rotate(-3deg) scale(1) } to { transform: rotate(4deg) scale(1.06) } }
+
+@media (prefers-reduced-motion: reduce) {
+  #rays { display: none; }
+  .reveal { filter: none; transform: none; transition: opacity .3s ease; }
+  #fx, #glow, #progress { display: none; }
+  .gallery img, .igcard img { scale: 1; translate: none; }
+}
