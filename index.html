@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0c0620">
+  <title>Chibs &amp; Co. | Hand-painted wooden dolls</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700;9..144,900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <canvas id="c" aria-hidden="true"></canvas>
+  <div id="bgfx" aria-hidden="true"><i class="veil"></i><i class="grain"></i></div>
+
+  <!-- ================= HTML ================= -->
+  <nav>
+    <a class="logo" href="#top">Chibs &amp; Co.</a>
+    <div>
+      <a href="#instagram">Instagram</a><a href="#work">Work</a><a href="#types">Dolls</a><a href="#shop">Shop</a><a
+        href="#about">About</a><a href="#contact">Contact</a>
+      <button class="cartbtn" id="cartBtn" aria-label="Open cart">🛒<span class="badge" id="cartCount">0</span></button>
+    </div>
+  </nav>
+
+  <section class="s hero" id="top" data-pal="0">
+    <svg class="spark" viewBox="0 0 24 24" aria-hidden="true" style="top:14%;left:9%">
+      <path d="M12 0 L14 10 L24 12 L14 14 L12 24 L10 14 L0 12 L10 10 Z" />
+    </svg>
+    <svg class="spark" viewBox="0 0 24 24" aria-hidden="true" style="bottom:16%;right:11%;animation-delay:-3s,-1.5s">
+      <path d="M12 0 L14 10 L24 12 L14 14 L12 24 L10 14 L0 12 L10 10 Z" />
+    </svg>
+    <h1>Chibs<br>&amp; Co.</h1>
+    <div class="t">
+      <p>Hand-painted wooden peg dolls, made one at a time.</p>
+      <p class="sub">Scroll, drag or swipe the doll — or use the arrows — to turn it.</p>
+      <div class="divider" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <section class="s r" id="instagram" data-pal="1">
+    <div class="t reveal">
+      <h2>Straight from @chibs_n.co</h2>
+      <p>This shop lives on Instagram first — new dolls, orders and behind-the-scenes moments go up there before
+        anywhere else. This page is built around one real post.</p>
+      <figure class="igcard">
+        <img
+          src="images/photo-1.jpg"
+          alt="Hand holding a hand-painted wooden peg doll with a braid, pink floral dress and butterfly design">
+        <figcaption>The post this site is built around</figcaption>
+      </figure>
+      <a class="pill" data-igpost href="#" target="_blank" rel="noopener">See it on Instagram ↗</a>
+    </div>
+  </section>
+
+  <section class="s r" id="story" data-pal="2">
+    <div class="t reveal">
+      <h2>Painted by hand, stroke by stroke</h2>
+      <p>A braid, tiny blossoms and a butterfly on every dress. Turn the doll and you find a new detail from every side.
+      </p>
+    </div>
+  </section>
+
+  <section class="s" data-pal="3">
+    <div class="t reveal">
+      <h2>Head and body, shown apart</h2>
+      <p>A smooth round head sits on a cone body. Each piece is painted on its own, then joined.</p>
+    </div>
+  </section>
+
+  <section class="pad" id="process" data-pal="4">
+    <h2 class="reveal" style="text-align:center">How each doll is made</h2>
+    <div class="steps" id="steps"></div>
+  </section>
+
+  <section class="pad" id="work" data-pal="5">
+    <h2 class="reveal" style="text-align:center">A peek at our work</h2>
+    <p class="reveal sub" style="text-align:center;max-width:32rem;margin:.5rem auto 0">A few finished sets, fresh off
+      the workbench.</p>
+    <div class="gallery" id="gallery"></div>
+  </section>
+
+  <section class="s r" id="types" data-pal="6">
+    <div class="t reveal">
+      <h2>Six ways we paint this doll</h2>
+      <p>Same shape, hand-painted differently every time.</p>
+      <p><b id="tn"></b> <span id="td"></span></p>
+      <div class="chips" id="chips"></div>
+      <div class="namefield" id="nameField">
+        <label for="nameInput">Type a name to preview it on the doll</label>
+        <input id="nameInput" type="text" maxlength="12" placeholder="e.g. Ava"
+          aria-label="Name to paint on the custom doll">
+      </div>
+    </div>
+  </section>
+
+  <section class="s" id="about" data-pal="7">
+    <div class="t reveal">
+      <h2>Small hands, small batches</h2>
+      <p>Chibs &amp; Co. is a small home workshop — every doll is sanded, primed, hand-painted and sealed a few at a
+        time, never mass-produced.</p>
+      <p class="sub">If a design is out of stock, it's genuinely being repainted, not reordered from a warehouse.</p>
+    </div>
+  </section>
+
+  <section class="pad" id="shop" data-pal="8">
+    <svg class="spark" viewBox="0 0 24 24" aria-hidden="true" style="top:8%;left:6%">
+      <path d="M12 0 L14 10 L24 12 L14 14 L12 24 L10 14 L0 12 L10 10 Z" />
+    </svg>
+    <div class="divider" aria-hidden="true"></div>
+    <h2 class="reveal" style="text-align:center">Shop the collection</h2>
+    <p class="reveal sub" style="text-align:center;max-width:32rem;margin:.5rem auto 0">Solid beech, hand-painted and
+      sealed. Add what you'd like — checkout sends us the order directly.</p>
+    <div class="shopgrid" id="shopgrid"></div>
+  </section>
+
+  <section class="pad" id="faq" data-pal="9">
+    <div class="divider" aria-hidden="true"></div>
+    <h2 class="reveal" style="text-align:center">Good to know</h2>
+    <div class="faqlist" id="faqlist"></div>
+  </section>
+
+  <section class="pad" id="contact" data-pal="10">
+    <h2 class="reveal" style="text-align:center">Send us a message</h2>
+    <p class="reveal sub" style="text-align:center;max-width:30rem;margin:.5rem auto 0">Questions, custom orders, or
+      just want to say hi — this opens an email to us with what you type below.</p>
+    <form id="msgForm" class="msgform reveal" novalidate>
+      <div class="field"><label for="mName">Name</label><input id="mName" type="text" required autocomplete="name">
+      </div>
+      <div class="field"><label for="mEmail">Email</label><input id="mEmail" type="email" required autocomplete="email">
+      </div>
+      <div class="field"><label for="mMsg">Message</label><textarea id="mMsg" rows="5" required></textarea></div>
+      <button class="pill" type="submit">Send message</button>
+      <p class="formnote" id="formNote" aria-live="polite"></p>
+    </form>
+  </section>
+
+  <section class="pad end" id="reviews" data-pal="11">
+    <h2 class="reveal">What our customers say</h2>
+    <div class="grid" id="rv"></div>
+    <h2 class="reveal">Bring one home</h2>
+    <a class="pill" href="#shop">Shop the collection</a>
+    <footer>&copy; Chibs &amp; Co.</footer>
+  </section>
+
+  <div class="rotctl" id="rotctl" role="group" aria-label="Rotate the doll">
+    <button id="rotL" aria-label="Rotate left"><svg viewBox="0 0 24 24" width="16" height="16" fill="none"
+        stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M15 5l-7 7 7 7" />
+      </svg></button>
+    <span>Drag, swipe or tap the arrows</span>
+    <button id="rotR" aria-label="Rotate right"><svg viewBox="0 0 24 24" width="16" height="16" fill="none"
+        stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M9 5l7 7-7 7" />
+      </svg></button>
+    <button id="rotReset" aria-label="Reset rotation"><svg viewBox="0 0 24 24" width="16" height="16" fill="none"
+        stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polyline points="1 4 1 10 7 10" />
+        <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
+      </svg></button>
+  </div>
+  <div class="cart-overlay" id="cartOverlay"></div>
+  <aside class="cart-drawer" id="cartDrawer" aria-hidden="true">
+    <header>
+      <h3>Your cart</h3><button id="cartClose" aria-label="Close cart">✕</button>
+    </header>
+    <div class="cart-items" id="cartItems"></div>
+    <footer>
+      <div class="cart-sub"><span>Subtotal</span><span id="cartSubtotal">Rs. 0</span></div>
+      <button class="pill" id="checkoutBtn">Checkout</button>
+      <p class="cartnote">This is a demo cart — checkout opens an email with your order so we can confirm it by hand.
+      </p>
+    </footer>
+  </aside>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>
